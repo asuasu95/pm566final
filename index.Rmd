@@ -147,7 +147,7 @@ figure3
 
 <br>
 
-According to Figure 3, the Proportionate Mortality Ratio is increasing as the age increasing. Older pople are more likely to die due to Covid-19. Sex does not affect Proportionate Mortality Ratio of Covid-19 in this plot.
+According to Figure 3, the Proportionate Mortality Ratio increases as the age increases. Older people are more likely to die due to Covid-19. Sex does not affect Proportionate Mortality Ratio of Covid-19 in this plot.
 
 <br>
 

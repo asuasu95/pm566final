@@ -3,22 +3,22 @@
     "path": "C:/Users/s3648/Desktop/xueye/pm566/pm566final/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
-    "hash": "4061342201",
+    "hash": "1442823921",
     "contents": "",
     "dirty": false,
     "created": 1605694025600.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
-        "cursorPosition": "45,238",
-        "scrollLine": "31"
+        "cursorPosition": "149,108",
+        "scrollLine": "120"
     },
     "folds": "",
-    "lastKnownWriteTime": 1605737785,
+    "lastKnownWriteTime": 1605738324,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1605737785134,
+    "last_content_update": 1605738324711,
     "read_only": false,
     "read_only_alternatives": []
 }
