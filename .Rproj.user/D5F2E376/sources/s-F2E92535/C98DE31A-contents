@@ -31,12 +31,17 @@ opts_chunk$set(
   class.source = "code-r")
 ```
 
-#Introduction
+<br>
+
+# Introduction
 
 At the end of 2019, a novel coronavirus was identified as the cause of a cluster of pneumonia cases in China. It rapidly spread, and resulted in an epidemic throughout the world. In February 2020, the World Health Organization designated the disease COVID-19, which stands for coronavirus disease 2019. This report is designed to explore the association between COVID-19 death and state, sex, age groups.
 
+<br>
 
 # Methods
+
+<br>
 
 The data was obtained from the US CDC, Centers of Disease Control and Prevention. The date include deaths involving coronavirus disease 2019 (COVID-19), pneumonia, and influenza reported to NCHS by sex, age group and state.
 
@@ -44,11 +49,11 @@ There age group variable contains overlapping data. Therefore, only portion of t
 
 The proportionate mortality ratio was obtained by using COVID-19 deaths/total deaths.
 
+<br>
 
 # Preliminary Results
 
-
-
+<br>
 
 ```{r, warning=FALSE,message=FALSE,echo = FALSE}
 source("Mid_data.R")
@@ -96,9 +101,11 @@ figure4=plot_geo(covid_state) %>%
 
 ```
 
-## Proportionate Mortality Ratio in a state level
+
 
 ### Figure 1
+
+<br>
 
 ```{r PMR within different age groups by states, echo=FALSE}
 figure4
@@ -106,28 +113,39 @@ figure4
 
 According to Figure 1, New York has the highest proportionate mortality ratio of COVID-19. This may be caused by small living space per capita. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily get infected when staying with infected people.
 
+<br>
 
 ### Figure 2
+
+<br>
 
 ```{r Covid deaths within different sex by states, echo=FALSE}
 figure2
 ```
 
+<br>
+
 According to Figure 2, New York, California, Florida, and Texas shows that more males got infected by Covid-19 than females. Other states had close amount of infected people between males and females. This may be because that males are more likely to have social communications with others, and they have a larger chance to contact with infect people.
 
+<br>
+
 ### Figure 3
+
+<br>
 
 ```{r PMR within different sex by age groups, echo=FALSE}
 figure3
 ```
 
-According to Figure 3, 
+<br>
 
+According to Figure 3, the Proportionate Mortality Ratio is increasing as the age increasing. Older pople are more likely to die due to Covid-19.
 
+<br>
 
 # Conclusion
 
 In conclusion, the number of deaths due to Covid-19 varies in different states, sex, and age groups.
 The New York State has the highest proportionate mortality ratio due to COVID-19. Generally more people die from COVID-19 in New York State.
 Slightly more males died from COVID-19 than females.
-We found that older people (greater than 65 years old) are easier die because of COVID-19.
+We found that older people (greater than 65 years old) are more likely to die (more than 8%) because of COVID-19.
