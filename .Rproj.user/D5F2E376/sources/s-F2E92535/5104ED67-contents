@@ -1,0 +1,179 @@
+---
+title: "PM566 Midterm"
+author: "Changqing Su"
+date: "2020/10/9"
+output: 
+  prettydoc::html_pretty: 
+    theme: hpstr
+---
+
+## Intoduction 
+
+At the end of 2019, a novel coronavirus was identified as the cause of a cluster of pneumonia cases in China. It rapidly spread, resulting in an epidemic throughout the world. In February 2020, the World Health Organization designated the disease COVID-19, which stands for coronavirus disease 2019.
+This report is designed to explore the association between COVID-19 death and state, sex, age groups.
+
+
+
+## Methods
+
+The data was obstained from the US CDC, Centers of Disease Control and Prevention. The date include deaths involving coronavirus disease 2019 (COVID-19), pneumonia, and influenza reported to NCHS by sex and age group and state.
+
+We calculate the proportionate mortality ratio due to COVID-19 by using the COVID-19 deaths/total deaths.
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+library(dtplyr)
+library(dplyr)
+library(leaflet)
+library(tidyverse)
+library(ggplot2)
+
+```
+
+
+
+```{r}
+#Read file
+covid = fread("data/Provisional_COVID-19_Death_Counts_by_Sex__Age__and_State.csv")
+
+#Calculate proportionate mortality ratio due to COVID-19
+covid$PMR=covid$`COVID-19 Deaths`/covid$`Total Deaths`
+
+```
+
+
+#### Compare the proportionate mortality ratio among states.
+
+Here, we create a map of proportionate mortality ratio among the states.
+
+
+
+```{r, echo=T, warning=FALSE, message=FALSE, results='hide'}
+#load map data
+library(tigris)
+states <- states(cb=T)
+```
+
+
+```{r}
+#construct simple table of Covid data related to States
+covid_state=covid[which(covid$Sex == "All Sexes" & covid$State != "United States" & covid$`Age group`=="All Ages"),]
+covid_simp=subset(covid_state, select = c("State","COVID-19 Deaths","Total Deaths","PMR"))
+covid_simp= covid_simp[order(-covid_simp$`Total Deaths`),]
+knitr::kable(head(covid_simp))
+
+covid_simp= covid_simp[order(-covid_simp$PMR),]
+knitr::kable(head(covid_simp))
+```
+
+According to the table, we can see that California has the most people died from COVID-19, but it has a low proportionate mortality ratio. This means that California has a large number due to the large population. New York City has the highest proportionate mortality ratio due to COVID. This may caused by small living space per capita, since New York City has a large population but small living space. 
+
+
+```{r, warning=F, message=F}
+
+
+#covid_state$State[which(covid_state$State %in% states$NAME ==F)]
+
+#Combine New York City with New York State.
+covid_state[33,7:12]=covid_state[33,7:12]+covid_state[34,7:12]
+covid_state=covid_state[-34, ]
+covid_state$PMR=covid_state$`COVID-19 Deaths`/covid_state$`Total Deaths`
+colnames(covid_state)[4]="NAME"
+
+mergedata=merge(x = states, y = covid_state, by = "NAME", all.x = TRUE)
+
+#Construct PMR map
+pal <- colorBin("YlOrRd", domain = mergedata$PMR)
+leaflet() %>%
+ addProviderTiles("CartoDB.Positron") %>%
+  setView(-98.483330, 38.712046, zoom = 4) %>% 
+  addPolygons(
+    data=mergedata,
+    fillColor = ~pal(mergedata$PMR),
+    fillOpacity = 0.7, 
+              weight = 0.2, 
+              smoothFactor = 0.2 
+  )%>%
+  addLegend(pal = pal, 
+            values = mergedata$PMR, 
+            position = "bottomright", 
+            title = "PMR")
+  
+
+
+```
+
+Here we can see that the New York State has the highest proportionate mortality ratio due to COVID-19.
+It means that New York City has the most people died because of COVID-19.
+
+
+```{r, warning=F, message=F}
+#Construct Total Deaths map
+pal2 <- colorBin("YlOrRd", domain = mergedata$`COVID-19 Deaths`)
+leaflet() %>%
+ addProviderTiles("CartoDB.Positron") %>%
+  setView(-98.483330, 38.712046, zoom = 4) %>% 
+  addPolygons(
+    data=mergedata,
+    fillColor = ~pal2(mergedata$`COVID-19 Deaths`),
+    fillOpacity = 0.7, 
+              weight = 0.2, 
+              smoothFactor = 0.2 
+  )%>%
+  addLegend(pal = pal2, 
+            values = mergedata$`COVID-19 Deaths`, 
+            position = "bottomright", 
+            title = "Total Deaths")
+  
+
+```
+
+According to this map, we can see that the New York State has the most COVID-19 deaths(more than 30,000).
+California has the second most COVID-19 deaths(more than 15,000). But comparing to the previous map, it does not have a high RMR. This means that California has a large number because of the large population.
+
+
+
+#### Compare the proportionate mortality ratio beween genders and age groups.
+
+
+```{r , warning=F, message=F}
+covid_2=covid[which(covid$Sex == "All Sexes" & covid$State == "United States" & covid$`Age group`!="All Ages"),]
+covid_2=covid_2[which(covid_2$`Age group` == "Under 1 year" | covid_2$`Age group` == "1-4 years" | covid_2$`Age group` == "5-14 years" | covid_2$`Age group` == "15-24 years" | covid_2$`Age group` == "25-34 years" | covid_2$`Age group` == "35-44 years" | covid_2$`Age group` == "45-54 years" | covid_2$`Age group` == "55-64 years" | covid_2$`Age group` == "65-74 years" | covid_2$`Age group` == "75-84 years" | covid_2$`Age group` == "85 years and over")]
+
+covid_2=na.omit(covid_2)
+
+covid_3=subset(covid_2, select = c("Age group","COVID-19 Deaths","Total Deaths","PMR"))
+                
+knitr::kable(covid_3) 
+```
+
+Here, we can see that older people are more likely to die from COVID-19.
+
+```{r}
+
+age=c(0,1,5,15,25,35,45,55,65,75,85)
+PMR=covid_2$PMR
+ggplot(data.frame(age,PMR), aes(x=age,y=PMR,group=""))+geom_point()+geom_line()
+```
+The scatter plot also shows that the proportionate mortality ratio increases as age increases. The slope goes downhill because people will eventually die from the old age.
+
+
+
+```{r , warning=F, message=F}
+covid_2=covid[which(covid$Sex != "All Sexes" & covid$State == "United States" & covid$`Age group`=="All Ages"),]
+
+
+covid_2=na.omit(covid_2)
+
+covid_3=subset(covid_2, select = c("Sex","COVID-19 Deaths","Total Deaths","PMR"))
+                
+knitr::kable(covid_3) 
+```
+
+Here, we can see that more males died from Covid-19 than females.
+
+
+## Conlucsion
+From the map we can conclude that the New York State has the highest proportionate mortality ratio due to COVID-19. Generally more people die from COVID-19 in New York State.
+Slightly more males died from COVID-19 than females.
+We found that older people (greater than 65 years old) are easier die because of COVID-19.
