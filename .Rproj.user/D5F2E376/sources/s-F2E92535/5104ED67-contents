@@ -59,7 +59,7 @@ states <- states(cb=T)
 #construct simple table of Covid data related to States
 covid_state=covid[which(covid$Sex == "All Sexes" & covid$State != "United States" & covid$`Age group`=="All Ages"),]
 covid_simp=subset(covid_state, select = c("State","COVID-19 Deaths","Total Deaths","PMR"))
-covid_simp= covid_simp[order(-covid_simp$`Total Deaths`),]
+covid_simp= covid_simp[order(-covid_simp$`COVID-19 Deaths`),]
 knitr::kable(head(covid_simp))
 
 covid_simp= covid_simp[order(-covid_simp$PMR),]

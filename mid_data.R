@@ -21,3 +21,6 @@ covid_state[33,7:12]=covid_state[33,7:12]+covid_state[34,7:12]
 covid_state=covid_state[-34, ]
 covid_state$PMR=round(covid_state$`COVID-19 Deaths`/covid_state$`Total Deaths`,4)
 covid_state=covid_state[-c(9,52),]
+
+covid_simp=subset(covid_state, select = c("State","COVID-19 Deaths","Total Deaths","PMR"))
+covid_simp= covid_simp[order(-covid_simp$`COVID-19 Deaths`),]
