@@ -158,7 +158,7 @@ knitr::kable(head(covid_simp))
 
 ### {-}
 
-According to Figure 1, New York and New Jersey have a high proportionate mortality ratio of COVID-19. In addition, Figure 2 provides the information that it may be caused by high population density in the state of New York and New Jersey. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily to get infected when staying with infected people. \
+According to Figure 1, New York and New Jersey have a high proportionate mortality ratio of COVID-19. In addition, the second map provides the information that it may be caused by high population density in the state of New York and New Jersey. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily to get infected when staying with infected people. \
 According to Table 1, New Jersey has a much higher population density than New York but almost the same proportionate mortality ratio as New York. One reason may be that medical resources are better in New Jersey. Fewer people died from Covid-19. California also has a large number of deaths due to Covid-19, but California has a very low PMR comparing to New York and New Jersey. This may be because California has a large population and the state government did a better job of stopping the spread of Covid-19.
 
 <br>
@@ -175,6 +175,7 @@ figure5
 According to Figure 2, New York, New Jersey, Massachusetts, and Connecticut have a very high case fatality rate. This may be caused by either lack of medical resources or unaffordable medical expenses.  California, Florida, and Texas have a large number of cases but the CFR is very low. The reason may be that those areas provide affordable expenses and sufficient medical resources.
 
 <br>
+
 ### Figure 3
 
 <br>
