@@ -1,5 +1,5 @@
 ---
-title: "PM566 Final"
+title: "Exploring Covid-19 Deaths by State, Sex, and Age Groups"
 author: "Changqing Su"
 output: 
     html_document:
@@ -17,7 +17,8 @@ library(plotly)
 library(DT)
 library(knitr)
 
-# Initialize code chunk options
+
+  # Initialize code chunk options
 opts_chunk$set(
   warning = FALSE,
   message = FALSE,
@@ -35,7 +36,7 @@ opts_chunk$set(
 
 # Introduction
 
-At the end of 2019, a novel coronavirus was identified as the cause of a cluster of pneumonia cases in China. It rapidly spread, and resulted in an epidemic throughout the world. In February 2020, the World Health Organization designated the disease COVID-19, which stands for coronavirus disease 2019. This report is designed to explore the association between COVID-19 death and state, sex, age groups.
+At the end of 2019, a novel coronavirus was identified as the cause of a cluster of pneumonia cases in China. It rapidly spread and resulted in an epidemic throughout the world. In February 2020, the World Health Organization designated the disease COVID-19, which stands for coronavirus disease in 2019. This report is designed to explore the association between COVID-19 death and state, sex, age groups.
 
 <br>
 
@@ -43,9 +44,17 @@ At the end of 2019, a novel coronavirus was identified as the cause of a cluster
 
 <br>
 
-The data was obtained from the US CDC, Centers of Disease Control and Prevention on Oct 17, 2020. The data include deaths due to coronavirus disease 2019 (COVID-19), pneumonia, and influenza reported to NCHS by sex, age group and state. \
-There age group variable contains overlapping data. Therefore, only portion of the data was used. \
-The proportionate mortality ratio (PMR) was obtained by using COVID-19 deaths/total deaths. \
+The data of Covid-19 deaths was obtained from the US CDC, Centers of Disease Control and Prevention on Oct 17, 2020. The data include deaths due to coronavirus disease 2019 (COVID-19), pneumonia, and influenza reported to NCHS by sex, age group, and state. \
+( https://data.cdc.gov/api/views/9bhg-hcku/rows.csv?accessType=DOWNLOAD )\
+The age group variable contains overlapping data. Therefore, only a portion of the data was used.\
+The proportionate mortality ratio (PMR) was obtained by using COVID-19 deaths/total deaths.\
+The data of Covid_19 cases was also obtained from the US CDC on Oct 17, 2020.\
+( https://data.cdc.gov/api/views/9mfq-cb36/rows.csv?accessType=DOWNLOAD )\
+The case fatality rate (CFR) was obtained by using Coviding-19 deaths/Covid-19 cases.\
+The population data were obtained from the United States Census Bureau. The data were estimated based on the 2010 Census and reflect changes to the April 1, 2010 population due to the Count Question Resolution program and geographic program revisions. \ 
+( http://www2.census.gov/programs-surveys/popest/datasets/2010-2019/national/totals/nst-est2019-alldata.csv )\
+The state area data were obtained from the datasets package. The population density was obtained by using population/state area in square miles. 
+
 
 <br>
 
@@ -63,22 +72,33 @@ figure1=covid_2  %>%
 plot_ly(x = ~`Age group`, y = ~PMR, 
         type = 'scatter', mode = 'markers', color = ~State,
         size = ~`Total Deaths`, sizes = c(2, 30), 
-         marker = list(sizemode='diameter', opacity=0.6)) %>%
+         marker = list(sizemode='diameter', opacity=0.6),
+        text=c) %>%
   layout(title = "Age groups vs PMR by states",
                   yaxis = list(title = "Proportionate Mortality Ratio"), xaxis = list(title = "Age groups"))
   
 
-figure2= covid_2 %>%
-  plot_ly(x=~State , y = ~`COVID-19 Deaths`, color = ~Sex) %>%
+figure2= covid_3 %>%
+  plot_ly(x=~State , y = ~`COVID-19 Deaths`, color = ~Sex , colors = c("Orange","Skyblue")) %>%
   layout(title = "State vs COVID-19 Deaths by Sex",
                   yaxis = list(title = "COVID-19 Deaths"), xaxis = list(title = "State"))
-  
+
 
 figure3 =covid_2 %>%
-  plot_ly(x=~`Age group` , y = ~PMR, color = ~Sex) %>%
+  plot_ly(x=~`Age group` , y = ~`COVID-19 Deaths`, color = ~Sex) %>%
   add_bars() %>%
-  layout(title = "Age group vs PMR by Sex",
-                  yaxis = list(title = "Proportionate Mortality Ratio"), xaxis = list(title = "Age group "),barmode = "stack") 
+  layout(title = "Age group vs COVID-19 Deaths by Sex",
+                  yaxis = list(title = "COVID-19 Deaths"), xaxis = list(title = "Age group "),barmode = "stack") 
+
+
+figure5= covid_case %>%
+  plot_ly(x=~tot_death , y = ~cfr, color = ~state.name, type = 'scatter', mode = 'markers',
+size = ~tot_cases, sizes = c(2, 30),marker = list(sizemode='diameter', opacity=0.6),hoverinfo='text',
+text=~paste(paste(state.name,"<br>","Deaths:",tot_death),paste("Cases:",tot_cases),"<br>",paste("CFR:",cfr))
+) %>%
+  
+  layout(title = "Total deaths vs case fatality rate with cases by state",
+                  yaxis = list(title = "Case fatality rate"), xaxis = list(title = "Total deaths"))
 
 
 
@@ -111,62 +131,83 @@ figure4.1=plot_geo(state_pop) %>%
 
 ```
 
+
+
+
+
+
+
 ### Covid-19 in State Level {.tabset}
 
 #### Figure 1
 
 <br>
 
-```{r , echo=FALSE}
+```{r , warning=FALSE,message=FALSE,echo = FALSE}
 subplot(figure4,figure4.1,nrows = 2)
 
 ```
 
 #### Table 1
 
-```{r , echo=FALSE}
+```{r , warning=FALSE,message=FALSE,echo = FALSE}
 knitr::kable(head(covid_simp))
 ```
 
 ### {-}
 
-According to Figure 1, New York and New Jersey have a high proportionate mortality ratio of COVID-19. This may be caused by high population density especially New York City. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily get infected when staying with infected people. \
-According to Table 1, California also has a large number of deaths due to Covid-19, but California has a very low PMR comparing to New York. This may be because that the state government did a better job on stopping the spread of Covid-19. 
-
-
-<br>
-
-### Figure 2
+According to Figure 1, New York and New Jersey have a high proportionate mortality ratio of COVID-19. In addition, Figure 2 provides the information that it may be caused by high population density in the state of New York and New Jersey. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily to get infected when staying with infected people. \
+According to Table 1, New Jersey has a much higher population density than New York but almost the same proportionate mortality ratio as New York. One reason may be that medical resources are better in New Jersey. Fewer people died from Covid-19. California also has a large number of deaths due to Covid-19, but California has a very low PMR comparing to New York and New Jersey. This may be because California has a large population and the state government did a better job of stopping the spread of Covid-19.
 
 <br>
 
-```{r Covid deaths within different sex by states, echo=FALSE}
-figure2
-```
-
-<br>
-
-According to Figure 2, New York, California, Florida, and Texas shows that more males died from Covid-19 than females. Other states had close numbers between males and females. This may be because that males are more likely to have social communications with others, and they have a larger chance to contact with infect people.
-
-<br>
 
 ### Figure 3
 
 <br>
 
-```{r PMR within different sex by age groups, echo=FALSE}
+``` {r, warning=FALSE,message=FALSE,echo = FALSE}
+figure5
+```
+<br>
+According to Figure 2, New York, New Jersey, Massachusetts, and Connecticut have a very high case fatality rate. This may be caused by either lack of medical resources or unaffordable medical expenses.  California, Florida, and Texas have a large number of cases but the CFR is very low. The reason may be that those areas provide affordable expenses and sufficient medical resources.
+
+<br>
+### Figure 3
+
+<br>
+
+```{r Covid deaths within different sex by states, warning=FALSE,message=FALSE,echo = FALSE}
+figure2
+```
+
+<br>
+
+According to Figure 3, New York, California, Florida, and Texas show that more males died from Covid-19 than females. Other states had close numbers between males and females. This may be because males are more likely to have social communications with others, and they have a larger chance to contact with infected people.
+<br>
+
+### Figure 4
+
+<br>
+
+```{r PMR within different sex by age groups,  warning=FALSE,message=FALSE,echo = FALSE}
 figure3
 ```
 
 <br>
 
-According to Figure 3, the Proportionate Mortality Ratio increases as the age increases. Older people are more likely to die due to Covid-19. Sex does not affect Proportionate Mortality Ratio of Covid-19 in this plot.
+According to Figure 4, the number of deaths increases as age increases. Older people are more likely to die due to Covid-19. Sex does not affect the number of Covid-19 deaths in this plot.
 
 <br>
+
+
+
 
 # Conclusion
 
 In conclusion, the number of deaths due to Covid-19 varies in different states, sex, and age groups. \
-The New York State has the highest proportionate mortality ratio due to COVID-19. Generally more people die from COVID-19 in New York State. \
+The state of New York has the highest Covid-19 deaths and proportionate mortality among all states. Generally, more people die from COVID-19 in states with high population density. \
+New York, New Jersey, Massachusetts, and Connecticut have a very high case fatality rate. California, Florida, and Texas have a large number of cases but very low CFR. \
 Slightly more males died from COVID-19 than females. But the PMR does not vary between males and females. \
-In addition, older people (greater than 65 years old) are more likely to die (more than 8%) because of COVID-19. 
+In addition, older people (greater than 65 years old) are more likely to die because of COVID-19.
+
