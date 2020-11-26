@@ -89,12 +89,24 @@ g <- list(
   lakecolor = toRGB('white')
 )
 
+
+
 figure4=plot_geo(covid_state) %>%
   add_trace(
     z = ~PMR, text = ~State, span = I(0),
-    locations = state.abb, locationmode = 'USA-states' , color="Reds") %>% 
+    locations = state.abb, locationmode = 'USA-states' , colors="Reds") %>% 
+    colorbar(title = "proportionate mortality ratio") %>%
   layout(title='Covid PMR Map',
          geo = g)
+
+figure4.1=plot_geo(state_pop) %>%
+  add_trace(
+    z = ~pop_density, text = ~state.name, span = I(0),
+    locations = state.abb, locationmode = 'USA-states' , colors="Reds") %>% 
+    colorbar(title = "Population per sq.miles") %>% 
+  layout(title='PMR by State and Population Density', 
+         geo = g)
+ 
 
 
 ```
@@ -105,8 +117,9 @@ figure4=plot_geo(covid_state) %>%
 
 <br>
 
-```{r PMR within different age groups by states, echo=FALSE}
-figure4
+```{r , echo=FALSE}
+subplot(figure4,figure4.1,nrows = 2)
+
 ```
 
 #### Table 1
@@ -117,8 +130,8 @@ knitr::kable(head(covid_simp))
 
 ### {-}
 
-According to Figure 1, New York has the highest proportionate mortality ratio of COVID-19. This may be caused by small living space per capita. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily get infected when staying with infected people. \
-According to Table 1, California also has a large number of deaths due to Covid-19, but California has a very low PMR comparing to New York. This may be because that the state government did a better job on stopping the spread of Covid-19.
+According to Figure 1, New York and New Jersey have a high proportionate mortality ratio of COVID-19. This may be caused by high population density especially New York City. Since the virus can spread from an infected person’s mouth or nose in small liquid particles, others are very easily get infected when staying with infected people. \
+According to Table 1, California also has a large number of deaths due to Covid-19, but California has a very low PMR comparing to New York. This may be because that the state government did a better job on stopping the spread of Covid-19. 
 
 
 <br>

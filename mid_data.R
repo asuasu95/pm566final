@@ -22,5 +22,25 @@ covid_state=covid_state[-34, ]
 covid_state$PMR=round(covid_state$`COVID-19 Deaths`/covid_state$`Total Deaths`,4)
 covid_state=covid_state[-c(9,52),]
 
-covid_simp=subset(covid_state, select = c("State","COVID-19 Deaths","Total Deaths","PMR"))
+state_pop= fread("data/nst-est2019-alldata.csv")
+state_pop=state_pop[,c(5,17)]
+state_pop=state_pop[-c(1:5,14,57),]
+colnames(state_pop)[1]="State"
+
+covid_state=merge(covid_state,state_pop,by = "State")
+
+colnames(covid_state)[15]="est_pop"
+
+
+
+covid_simp=subset(covid_state, select = c("State","COVID-19 Deaths","Total Deaths","PMR","est_pop"))
 covid_simp= covid_simp[order(-covid_simp$`COVID-19 Deaths`),]
+colnames(covid_simp)[5]="Population"
+
+
+
+
+State_area=data.frame(state.name,state.area)
+colnames(state_pop)[1]="state.name"
+state_pop=merge(state_pop,State_area,by="state.name")
+state_pop$pop_density=state_pop$POPESTIMATE2019/state_pop$state.area
