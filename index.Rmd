@@ -36,6 +36,8 @@ opts_chunk$set(
 
 # Introduction
 
+<br>
+
 At the end of 2019, a novel coronavirus was identified as the cause of a cluster of pneumonia cases in China. It rapidly spread and resulted in an epidemic throughout the world. In February 2020, the World Health Organization designated the disease COVID-19, which stands for coronavirus disease in 2019. This report is designed to explore the association between COVID-19 death and state, sex, age groups.
 
 <br>
@@ -162,7 +164,7 @@ According to Table 1, New Jersey has a much higher population density than New Y
 <br>
 
 
-### Figure 3
+### Figure 2
 
 <br>
 
@@ -204,6 +206,9 @@ According to Figure 4, the number of deaths increases as age increases. Older pe
 
 
 # Conclusion
+
+<br>
+
 
 In conclusion, the number of deaths due to Covid-19 varies in different states, sex, and age groups. \
 The state of New York has the highest Covid-19 deaths and proportionate mortality among all states. Generally, more people die from COVID-19 in states with high population density. \

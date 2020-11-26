@@ -7,6 +7,10 @@ navbar:
       href: index.html
     - text: "Report PDF"
       href: final.pdf
+  right:
+    - text: "Github Page"
+      href: "https://github.com/asuasu95/pm566final"
+  
 output:
   html_document:
     theme: cosmo
